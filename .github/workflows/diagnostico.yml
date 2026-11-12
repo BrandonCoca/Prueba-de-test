@@ -1,0 +1,25 @@
+name: Diagnostico
+on: push
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci && npx playwright install --with-deps chromium
+      - run: |
+          echo "::notice::curl $(curl -s -o /dev/null -w '%{http_code}' https://practicesoftwaretesting.com/auth/login)"
+          cat > diag.mjs <<'JS'
+          import { chromium } from '@playwright/test'
+          const b = await chromium.launch()
+          const p = await b.newPage({ locale: 'en-US' })
+          const r = await p.goto('https://practicesoftwaretesting.com/auth/login')
+          await p.waitForTimeout(8000)
+          const txt = (await p.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300)
+          console.log(`::notice::status=${r.status()} title=${await p.title()} email=${await p.locator('[data-test=email]').count()}`)
+          console.log(`::notice::body=${txt}`)
+          await b.close()
+          JS
+          node diag.mjs
