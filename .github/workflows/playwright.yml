@@ -9,7 +9,8 @@ on:
 jobs:
   test:
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    # Variable RUNNER del repo para usar un runner propio (self-hosted), ver README
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,6 +22,15 @@ jobs:
         run: npx playwright install --with-deps chromium firefox
       - name: Typecheck
         run: npm run typecheck
+      # Cloudflare responde 403 a las IPs de los runners de GitHub, se avisa en vez de esperar timeouts
+      - name: Check site access
+        shell: bash
+        run: |
+          status=$(curl -s -o /dev/null -w '%{http_code}' https://practicesoftwaretesting.com/auth/login)
+          if [ "$status" != "200" ]; then
+            echo "::error::El sitio respondio $status (verificacion anti-bots de Cloudflare). Ver README, comportamiento 7."
+            exit 1
+          fi
       # Sin .env en el repo, la config usa .env.example
       - name: Run Playwright tests
         run: npx playwright test

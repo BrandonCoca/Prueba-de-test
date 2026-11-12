@@ -48,6 +48,7 @@ Durante la automatización se identificaron los siguientes comportamientos:
 4. **Nombre del producto:** algunos productos incluyen la insignia `ECO` dentro del encabezado, por lo que la validación del nombre contempla texto adicional.
 5. **Expiración de sesión:** el token JWT tiene una duración aproximada de cinco minutos. Por ello, el `storageState` debe utilizarse dentro de ese periodo.
 6. **Firefox en modo visible:** en el entorno local de Windows se identificó un problema de bloqueo durante algunos clics de envío. Las pruebas funcionan correctamente en modo headless. Para la ejecución en modo visible se utiliza Chromium.
+7. **Bloqueo en GitHub Actions:** el sitio está protegido por Cloudflare y responde `403` ("Just a moment... Performing security verification") a las solicitudes que salen de los runners de GitHub, incluso a un simple `curl`. La API no tiene esa protección. Por eso el workflow falla en los runners de GitHub, aunque localmente todas las pruebas pasan. No se intentó evadir la protección. El workflow verifica primero el acceso al sitio y, si está bloqueado, termina con un mensaje claro en lugar de agotar los timeouts. Para ejecutarlo en un runner propio, se registra un runner self-hosted y se define la variable de repositorio `RUNNER=self-hosted`.
 
 ## Supuestos y limitaciones
 
@@ -62,3 +63,4 @@ Durante la automatización se identificaron los siguientes comportamientos:
 - Incorporar pruebas en WebKit y diferentes tamaños de pantalla.
 - Ampliar las validaciones negativas del registro de usuarios.
 - Incorporar ESLint para mejorar el control de calidad del código.
+- Ejecutar el CI en un runner self-hosted o en una red permitida por el sitio, para evitar el bloqueo de Cloudflare.
