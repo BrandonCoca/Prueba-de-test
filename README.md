@@ -2,6 +2,8 @@
 
 Automatización del flujo de compra de [Practice Software Testing](https://practicesoftwaretesting.com) utilizando Playwright Test y TypeScript.
 
+Link del github: https://github.com/BrandonCoca/Prueba-de-test.git
+
 ## Requisitos
 
 - Node.js 20.12 o superior.
