@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        "module": "NodeNext",
+        "types": ["node"],
+        "strict": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "noEmit": true
+    }
+}

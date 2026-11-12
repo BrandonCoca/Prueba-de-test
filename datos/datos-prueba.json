@@ -1,0 +1,22 @@
+{
+    "usuario": {
+        "nombres": ["Brandon", "Lucia", "Mateo", "Valeria", "Diego"],
+        "apellidos": ["Rojas", "Flores", "Vargas", "Mendoza", "Quispe"],
+        "direccion": {
+            "pais": "BO",
+            "codigoPostal": "0000",
+            "numeroCasa": "45"
+        }
+    },
+    "credencialesInvalidas": {
+        "correo": "usuario.no.registrado@example.com",
+        "contrasena": "Wrong#Pass123"
+    },
+    "mensajes": {
+        "loginInvalido": "Invalid email or password"
+    },
+    "productos": [
+        { "nombre": "Construction Helmet", "precio": 41.29, "cantidad": 1 },
+        { "nombre": "Circular Saw", "precio": 80.19, "cantidad": 2 }
+    ]
+}
